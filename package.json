@@ -1,16 +1,23 @@
 {
-  "name": "roux-academy",
-  "version": "1.0.0",
-  "description": "Exercise files for my course Building a Website with Node.js and Express",
-  "main": "server.js",
-  "scripts": {
-    "start": "nodemon server.js"
-  },
-  "keywords": [],
-  "author": "Daniel Khan",
-  "license": "MIT",
-  "devDependencies": {},
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+    "name": "roux-academy",
+    "version": "1.0.0",
+    "description": "Exercise files for my course Building a Website with Node.js and Express",
+    "main": "server.js",
+    "scripts": {
+        "start": "nodemon server.js"
+    },
+    "keywords": [],
+    "author": "Daniel Khan",
+    "license": "MIT",
+    "devDependencies": {
+        "eslint": "^7.27.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.23.3",
+        "eslint-plugin-prettier": "^3.4.0",
+        "prettier": "^2.3.0"
+    },
+    "dependencies": {
+        "express": "^4.17.1"
+    }
 }
