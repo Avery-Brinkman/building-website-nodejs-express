@@ -10,6 +10,9 @@ const app = express();
 // 3000.
 const port = 3000;
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, './views'));
+
 // This is called 'middleware'
 // It tells express to look in the static folder for each static request it recieves,
 // and if it finds a match it will send it.
@@ -21,7 +24,9 @@ app.get('/', (request, response) => {
     // When the app gets a request, we will send a file to response (response.sendFile)
     // The file we want to send is located in CurrentDirectory/static/index.html
     // __dirname is CurrentDirectory
-    response.sendFile(path.join(__dirname, './static/index.html'));
+    // response.sendFile(path.join(__dirname, './static/index.html'));
+
+    response.render('pages/index', { pageTitle: 'Welcome' });
 });
 
 app.get('/speakers', (request, response) => {
