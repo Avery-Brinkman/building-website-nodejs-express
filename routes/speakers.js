@@ -27,6 +27,7 @@ module.exports = (params) => {
         response.render('layout', {
             pageTitle: speaker.name,
             template: 'speakers-detail',
+            siteName: 'Speaker',
             speaker,
             artwork,
         });
