@@ -2,6 +2,8 @@
 const express = require('express');
 const path = require('path');
 
+const routes = require('./routes');
+
 // express needs parenthesis bc it's something that's running
 const app = express();
 
@@ -18,16 +20,8 @@ app.set('views', path.join(__dirname, './views'));
 // and if it finds a match it will send it.
 app.use(express.static(path.join(__dirname, './static')));
 
-// We need a route to open in the browser.
-// app.get("this is for the slash route, so that's the index route", callback)
-app.get('/', (request, response) => {
-    // When the app gets a request, we will send a file to response (response.sendFile)
-    // The file we want to send is located in CurrentDirectory/static/index.html
-    // __dirname is CurrentDirectory
-    // response.sendFile(path.join(__dirname, './static/index.html'));
-
-    response.render('pages/index', { pageTitle: 'Welcome' });
-});
+// More middleware
+app.use('/', routes());
 
 app.get('/speakers', (request, response) => {
     response.sendFile(path.join(__dirname, './static/speakers.html'));

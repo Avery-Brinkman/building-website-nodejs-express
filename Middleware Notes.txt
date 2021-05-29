@@ -1,0 +1,59 @@
+Key concept of express, everything is built around them.
+
+> app.use(callback);
+> app.use(path, callback);
+    Only executed if it matches this path
+> app.[get | post | put | delete | ...](path, callback);
+    Use http verbs. 
+
+Express middlewares can:
+    Execute code.
+    Take request and response objects as arguments and operate on them.
+    End the request-response cycle. Mostly to send data back to the caller.
+    Call the next middleware in the stack.
+
+General middleware
+
+        [Verb] [Handler Func]
+    | app.use((req, res, next) => {
+    |   // Do something
+    |   return next();
+    | });
+
+    !!! MIDDLEWARE MUST CALL NEXT TO CONTINUE THE FLOW OR SEND SOMETHING BACK TO END IT. !!!
+
+    HTTP has different verbs, like get, post, put, delete, that are part of HTTP protocol
+         [Verb]  [Path]   [Handler Function]
+    | app.get('/feedback', (req, res, next) => {
+    |   // Do something
+    |   return res.send('Hello');
+    | });
+
+Parameter Routes
+    | app.get('/speakers/:speakername', handler);
+        Can be dynamic
+        Matches:
+            http://localhost:3000/speakers/melissa
+            http://localhost:3000/speakers/frank
+            Melissa and Frank are automatically stored to the speakername variable
+
+    | app.get('/speakers/:speakername?', handler);
+        Means parameter is optional
+        Matches:
+            http://localhost:3000/speakers
+            http://localhost:3000/speakers/frank
+            
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~DIAGRAM~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                        [ APP INIT ]
+         GET /speakers
+Request --------------> [ app.use() ]             [ app.get('/') ]
+                             | 
+                             | next()
+                             v            next()                            res.send()
+                        [ app.use() ]     ------> [ app.get('/speakers') ] -----------> Response
+                             |            |
+                             | next()     |
+                             v            |
+                        [ app.use() ] -----       [ app.post('/feedback')]
