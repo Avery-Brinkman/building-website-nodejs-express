@@ -32,10 +32,24 @@ app.use(
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, './views'));
 
+// Sets variable siteName on creation
+app.locals.siteName = 'ROUX Meetups';
+
 // This is called 'middleware'
 // It tells express to look in the static folder for each static request it recieves,
 // and if it finds a match it will send it.
 app.use(express.static(path.join(__dirname, './static')));
+
+app.use(async (request, response, next) => {
+    try {
+        const names = await speakersService.getNames();
+        response.locals.speakerNames = names;
+        console.log(response.locals);
+        return next();
+    } catch (err) {
+        return next(err);
+    }
+});
 
 // Middleware
 app.use(
