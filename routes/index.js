@@ -6,7 +6,7 @@ const feedbackRoute = require('./feedback');
 const router = express.Router();
 
 // Returns this function
-module.exports = () => {
+module.exports = (params) => {
     // We need a route to open in the browser.
     // app.get("this is for the slash route, so that's the index route", callback)
     router.get('/', (request, response) => {
@@ -18,8 +18,8 @@ module.exports = () => {
     });
 
     // For everything matching the /speakers route, use speakersRoute
-    router.use('/speakers', speakersRoute());
-    router.use('/feedback', feedbackRoute());
+    router.use('/speakers', speakersRoute(params));
+    router.use('/feedback', feedbackRoute(params));
 
     return router;
 };
