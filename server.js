@@ -57,10 +57,6 @@ app.use(
     })
 );
 
-app.get('/speakers', (request, response) => {
-    response.sendFile(path.join(__dirname, './static/speakers.html'));
-});
-
 // We need to start the server and tell it where to listen
 http.listen(port, () => {
     // Called as soon as the port is listening
