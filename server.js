@@ -53,5 +53,6 @@ app.get('/speakers', (request, response) => {
 // We need to start the server and tell it where to listen
 app.listen(port, () => {
     // Called as soon as the port is listening
+    // eslint-disable-next-line no-console
     console.log(`Express server listening on port ${port}.`);
 });
