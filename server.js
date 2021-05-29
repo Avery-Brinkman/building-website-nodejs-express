@@ -2,6 +2,10 @@ const express = require('express');
 const path = require('path');
 const cookieSession = require('cookie-session');
 
+// express needs parenthesis bc it's something that's running
+const app = express();
+const http = require('http').Server(app);
+
 const FeedbackService = require('./services/FeedbackService');
 const SpeakersService = require('./services/SpeakerService');
 
@@ -9,9 +13,6 @@ const feedbackService = new FeedbackService('./data/feedback.json');
 const speakersService = new SpeakersService('./data/speakers.json');
 
 const routes = require('./routes');
-
-// express needs parenthesis bc it's something that's running
-const app = express();
 
 // This is the port that the application will be listening to. Usually, web servers are on port 80,
 // but it's convention that Express servers are on 3000.
@@ -61,7 +62,7 @@ app.get('/speakers', (request, response) => {
 });
 
 // We need to start the server and tell it where to listen
-app.listen(port, () => {
+http.listen(port, () => {
     // Called as soon as the port is listening
 
     // eslint-disable-next-line no-console
