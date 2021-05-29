@@ -1,6 +1,7 @@
 // const { request, response } = require('express');
 const express = require('express');
 const path = require('path');
+const cookieSession = require('cookie-session');
 
 const FeedbackService = require('./services/FeedbackService');
 const SpeakersService = require('./services/SpeakerService');
@@ -17,6 +18,16 @@ const app = express();
 // servers are on port 80, but it's convention that Express servers are on
 // 3000.
 const port = 3000;
+
+// Makes express trust cookies that are passed through a reverse proxy
+app.set('trust proxy', 1);
+
+app.use(
+    cookieSession({
+        name: 'session',
+        keys: ['UQ9fc5yoEn', 'OUWXb30Ppk'],
+    })
+);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, './views'));
