@@ -14,7 +14,7 @@ module.exports = (params) => {
         // The file we want to send is located in CurrentDirectory/static/index.html
         // __dirname is CurrentDirectory
         // response.sendFile(path.join(__dirname, './static/index.html'));
-        response.render('pages/index', { pageTitle: 'Welcome' });
+        response.render('layout', { pageTitle: 'Welcome', template: 'index' });
     });
 
     // For everything matching the /speakers route, use speakersRoute
