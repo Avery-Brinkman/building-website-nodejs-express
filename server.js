@@ -20,7 +20,7 @@ app.set('views', path.join(__dirname, './views'));
 // and if it finds a match it will send it.
 app.use(express.static(path.join(__dirname, './static')));
 
-// More middleware
+// Middleware
 app.use('/', routes());
 
 app.get('/speakers', (request, response) => {
