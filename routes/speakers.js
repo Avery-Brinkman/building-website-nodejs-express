@@ -16,10 +16,12 @@ module.exports = (params) => {
 
     router.get('/:shortname', async (request, response) => {
         const speaker = await speakersService.getSpeaker(request.params.shortname);
+        const speakerArt = await speakersService.getArtworkForSpeaker(request.params.shortname);
         response.render('layout', {
             pageTitle: speaker.name,
             template: 'speakers-detail',
             speaker,
+            speakerArt,
         });
     });
 
