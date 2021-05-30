@@ -7,6 +7,7 @@ const router = express.Router();
 
 // Returns this function
 module.exports = (params) => {
+    // const speakersService = params.speakersService;
     const { speakersService } = params;
 
     /* We need a route to open in the browser.

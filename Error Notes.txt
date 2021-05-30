@@ -1,0 +1,29 @@
+Throwing an error is great as it will show and output the problem without breaking anything
+However, trying to throw an error an an asychronous process will stop everything
+Ex:
+    | app.get('/throw', (request, response, next) => {
+    |   throw new Error('Something threw!');
+    | });
+    Going to '.../throw' will show a page with the error "Error: Something threw!" which will also
+      appear in the console.
+    Returning to '.../' will work without issue.
+
+    | app.get('/throw', (request, response, next) => {
+    |     setTimeout(() => {
+    |         throw new Error('Something threw!');
+    |     }, 500);
+    | });
+    Going to '.../throw' will not load a page.
+    Returning to '.../' will also not load a page as the app will have crashed.
+
+Using next can help with errors during asychronous processes.
+next takes an error as the first argument.
+Ex: 
+    | app.get('/throw', (request, response, next) => {
+    |     setTimeout(() => {
+    |         return next(new Error('Something threw!'));
+    |     }, 500);
+    | });
+    Going to '.../throw' will show a page with the error "Error: Something threw!" which will also
+      appear in the console.
+    Returning to '.../' will work without issue.

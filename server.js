@@ -12,6 +12,7 @@ const SpeakersService = require('./services/SpeakerService');
 const feedbackService = new FeedbackService('./data/feedback.json');
 const speakersService = new SpeakersService('./data/speakers.json');
 
+// const routes = require('./routes/index.js');
 const routes = require('./routes');
 
 // This is the port that the application will be listening to. Usually, web servers are on port 80,
