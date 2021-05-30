@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieSession = require('cookie-session');
+const createError = require('http-errors');
 
 // express needs parenthesis bc it's something that's running
 const app = express();
@@ -57,6 +58,22 @@ app.use(
         speakersService,
     })
 );
+
+// We will only end up here if no route was found in our routing immediatley above this
+app.use((request, response, next) => next(createError(404, 'Page not found.')));
+
+/* Telling Express which function to use to handle errors. It knows that it should be handling
+ * errors because it takes 4 arguments (the 1st being the error). */
+app.use((err, request, response, next) => {
+    response.locals.message = err.message;
+
+    // status = err.status, or 500 (internal server error) if err.status DNE
+    const status = err.status || 500;
+    response.locals.status = status;
+    response.status(status);
+    response.render('error');
+    next();
+});
 
 // We need to start the server and tell it where to listen
 http.listen(port, () => {
