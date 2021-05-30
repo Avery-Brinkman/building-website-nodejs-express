@@ -67,6 +67,9 @@ app.use((request, response, next) => next(createError(404, 'Page not found.')));
 app.use((err, request, response, next) => {
     response.locals.message = err.message;
 
+    // eslint-disable-next-line no-console
+    console.error(err);
+
     // status = err.status, or 500 (internal server error) if err.status DNE
     const status = err.status || 500;
     response.locals.status = status;
