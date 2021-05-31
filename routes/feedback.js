@@ -13,6 +13,11 @@ module.exports = (params) => {
 
             // const errors = request.session.feedback.errors if request.session.feedback exists, else = false
             const errors = request.session.feedback ? request.session.feedback.errors : false;
+
+            const successMessage = request.session.feedback
+                ? request.session.feedback.message
+                : false;
+
             // After storing the errors, reset the state
             request.session.feedback = {};
 
@@ -21,6 +26,7 @@ module.exports = (params) => {
                 template: 'feedback',
                 feedback,
                 errors,
+                successMessage,
             });
         } catch (err) {
             return next(err);
@@ -48,20 +54,29 @@ module.exports = (params) => {
                 .escape()
                 .withMessage('A message is required'),
         ],
-        (request, response, next) => {
-            const errors = validationResult(request);
+        async (request, response, next) => {
+            try {
+                const errors = validationResult(request);
 
-            if (!errors.isEmpty()) {
-                // Stores to variable called feedback on session object
+                if (!errors.isEmpty()) {
+                    // Stores to variable called feedback on session object
+                    request.session.feedback = {
+                        errors: errors.array(),
+                    };
+
+                    return response.redirect('/feedback');
+                }
+
+                const { name, email, title, message } = request.body;
+                await feedbackService.addEntry(name, email, title, message);
+
                 request.session.feedback = {
-                    errors: errors.array(),
+                    message: 'Thank you for your feedback!',
                 };
                 return response.redirect('/feedback');
+            } catch (err) {
+                return next(err);
             }
-
-            console.log(request.body);
-
-            return response.send('Feedback form posted');
         }
     );
 
