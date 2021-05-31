@@ -19,6 +19,7 @@ module.exports = (params) => {
     });
 
     router.post('/', (request, response, next) => {
+        console.log(request.body);
         try {
             return response.send('Feedback form posted');
         } catch (err) {

@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieSession = require('cookie-session');
 const createError = require('http-errors');
+const bodyParser = require('body-parser');
 
 // express needs parenthesis bc it's something that's running
 const app = express();
@@ -29,6 +30,8 @@ app.use(
         keys: ['UQ9fc5yoEn', 'OUWXb30Ppk'],
     })
 );
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, './views'));
