@@ -48,8 +48,9 @@
         <aside class="col-md-8">
             <div class="maincontent feedback">
                 <h1>Recent Feedback</h1>
-                <% feedback.forEach(function (feedbackItem) { %>
+
                 <div class="feedback-items">
+                    <% feedback.forEach(function (feedbackItem) { %>
                     <div class="feedback-item item-list media-list">
                         <div class="feedback-item media">
                             <div class="feedback-info media-body">
@@ -61,8 +62,8 @@
                             </div>
                         </div>
                     </div>
+                    <% }) %>
                 </div>
-                <% }) %>
             </div>
         </aside>
     </div>
