@@ -1,0 +1,33 @@
+REST
+Representational State Transfer
+
+Most common used pattern for APIs
+
+HTTP Verbs and REST
+    .get    --- Request a resource
+    .post   --- Create a resource
+    .put    --- Update a resource
+    .delete --- Delete a resource
+
+    Normal routes return HTML
+    REST returns data (usually JSON)
+
+Create, Update, and Delete (CRUD) via REST
+    HTTP GET http://mysite.com/users
+        Getting all users
+    HTTP POST (payload) http://mysite.com/users
+        Creating a new user
+    HTTP GET http://mysite.com/users/42
+        Getting the user with the ID 42
+    HTTP PUT (payload) http://mysite.com/users/42
+        Updating user ID
+    HTTP DELETE http://mysite.com/users/42
+        Deleting user with ID 42
+
+REST in Web Applications
+
+    [Browser]   ---HTTP GET http://mysite.com-->  [Back end]
+    [Browser]   <--HTML page with JavaScript ---  [Back end]
+
+    | Browser | <-- XHR (AJAX) --- | Back end |
+    | [ JS ]  | ---    REST    --> |          |
