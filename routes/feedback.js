@@ -4,6 +4,22 @@ const { check, validationResult } = require('express-validator');
 
 const router = express.Router();
 
+const validations = [
+    check('name') // Check name
+        .trim() // Trims whitespace
+        .isLength({ min: 3 }) // Ensures name is at least 3 letters
+        .escape() // Escaping to make sure there is no HTML and JavaScript embedded in entry
+        .withMessage('A name is required'), // Message returned if something is wrong
+    check('email')
+        .trim()
+        .isEmail() // Checks if email is real
+        .normalizeEmail() // Formats email
+        .escape()
+        .withMessage('A valid email address is required'),
+    check('title').trim().isLength({ min: 3 }).escape().withMessage('A title is required'),
+    check('message').trim().isLength({ min: 5 }).escape().withMessage('A message is required'),
+];
+
 module.exports = (params) => {
     const { feedbackService } = params;
 
@@ -33,52 +49,49 @@ module.exports = (params) => {
         }
     });
 
-    router.post(
-        '/',
-        [
-            check('name') // Check name
-                .trim() // Trims whitespace
-                .isLength({ min: 3 }) // Ensures name is at least 3 letters
-                .escape() // Escaping to make sure there is no HTML and JavaScript embedded in entry
-                .withMessage('A name is required'), // Message returned if something is wrong
-            check('email')
-                .trim()
-                .isEmail() // Checks if email is real
-                .normalizeEmail() // Formats email
-                .escape()
-                .withMessage('A valid email address is required'),
-            check('title').trim().isLength({ min: 3 }).escape().withMessage('A title is required'),
-            check('message')
-                .trim()
-                .isLength({ min: 5 })
-                .escape()
-                .withMessage('A message is required'),
-        ],
-        async (request, response, next) => {
-            try {
-                const errors = validationResult(request);
+    router.post('/', validations, async (request, response, next) => {
+        try {
+            const errors = validationResult(request);
 
-                if (!errors.isEmpty()) {
-                    // Stores to variable called feedback on session object
-                    request.session.feedback = {
-                        errors: errors.array(),
-                    };
-
-                    return response.redirect('/feedback');
-                }
-
-                const { name, email, title, message } = request.body;
-                await feedbackService.addEntry(name, email, title, message);
-
+            if (!errors.isEmpty()) {
+                // Stores to variable called feedback on session object
                 request.session.feedback = {
-                    message: 'Thank you for your feedback!',
+                    errors: errors.array(),
                 };
+
                 return response.redirect('/feedback');
-            } catch (err) {
-                return next(err);
             }
+
+            const { name, email, title, message } = request.body;
+            await feedbackService.addEntry(name, email, title, message);
+
+            request.session.feedback = {
+                message: 'Thank you for your feedback!',
+            };
+            return response.redirect('/feedback');
+        } catch (err) {
+            return next(err);
         }
-    );
+    });
+
+    // Route is /feedback/api
+    router.post('/api', validations, async (request, response, next) => {
+        try {
+            const errors = validationResult(request);
+
+            if (!errors.isEmpty()) {
+                return response.json({ errors: errors.array() });
+            }
+
+            const { name, email, title, message } = request.body;
+            await feedbackService.addEntry(name, email, title, message);
+
+            const feedback = await feedbackService.getList();
+            return response.json({ feedback });
+        } catch (err) {
+            return next(err);
+        }
+    });
 
     return router;
 };
